@@ -72,6 +72,8 @@ function Table(filteredExpenses) {
     deleteBtn.style.border = "none";
     deleteBtn.style.padding = "5px 10px";
     deleteBtn.style.borderRadius = "5px";
+    deleteBtn.style.marginRight = "10px";
+
     deleteBtn.addEventListener("click", () => {
       expenses.splice(index, 1);
       Table(expenses);

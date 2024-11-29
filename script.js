@@ -1,5 +1,6 @@
 let expenses = [];
-let totalAmount = 0;
+let totalIncome = 0;
+let totalExpense = 0;
 
 const categorySelect = document.getElementById("category");
 const amountInput = document.getElementById("amount");
@@ -9,13 +10,15 @@ const addBtn = document.getElementById("add-btn");
 const resetBtn = document.getElementById("reset-btn");
 
 const expenseData = document.getElementById("expense-data");
-const TotalExpenseAmount = document.getElementById("Total-expense-amount");
+const totalIncomeCell = document.getElementById("Total-income-amount");
+const totalExpenseCell = document.getElementById("Total-expense-amount");
 
 let isEditing = false;
 let editIndex = -1;
 
-function updateTotal() {
-  TotalExpenseAmount.textContent = totalAmount.toFixed(2);
+function updateTotals() {
+  totalIncomeCell.textContent = totalIncome.toFixed(2);
+  totalExpenseCell.textContent = totalExpense.toFixed(2);
 }
 
 function clearForm() {
@@ -49,18 +52,21 @@ addBtn.addEventListener("click", function () {
   }
 
   if (isEditing) {
-   
     const expense = expenses[editIndex];
-    totalAmount -= expense.amount;
+
+    // Update totals
+    if (expense.category === "income") totalIncome -= expense.amount;
+    else totalExpense -= expense.amount;
 
     expense.category = category;
     expense.amount = amount;
     expense.description = description;
     expense.date = date;
 
-    totalAmount += amount;
+    if (category === "income") totalIncome += amount;
+    else totalExpense += amount;
 
-
+    // Update the table row
     const row = expenseData.rows[editIndex];
     row.cells[1].textContent =
       category === "income" ? amount.toFixed(2) : "- -";
@@ -73,10 +79,12 @@ addBtn.addEventListener("click", function () {
     editIndex = -1;
     addBtn.textContent = "Add";
   } else {
-    
     const newExpense = { category, amount, description, date };
     expenses.push(newExpense);
-    totalAmount += amount;
+
+    // Update totals
+    if (category === "income") totalIncome += amount;
+    else totalExpense += amount;
 
     const newRow = expenseData.insertRow();
     newRow.insertCell().textContent = expenseData.rows.length; // S.No
@@ -87,23 +95,28 @@ addBtn.addEventListener("click", function () {
     newRow.insertCell().textContent = description;
     newRow.insertCell().textContent = date;
 
-   
+    // Action Cell
     const actionCell = newRow.insertCell();
 
-
+    // Delete Button
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.classList.add("delete-btn");
     deleteBtn.addEventListener("click", function () {
       const index = Array.from(expenseData.rows).indexOf(newRow);
-      totalAmount -= expenses[index].amount;
+      const expense = expenses[index];
+
+      if (expense.category === "income") totalIncome -= expense.amount;
+      else totalExpense -= expense.amount;
+
       expenses.splice(index, 1);
       expenseData.deleteRow(index);
-      updateTotal();
+
+      updateTotals();
     });
     actionCell.appendChild(deleteBtn);
 
-   
+    // Edit Button
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
     editBtn.classList.add("edit-btn");
@@ -111,7 +124,6 @@ addBtn.addEventListener("click", function () {
       const index = Array.from(expenseData.rows).indexOf(newRow);
       const expense = expenses[index];
 
- 
       categorySelect.value = expense.category;
       amountInput.value = expense.amount;
       descriptionInput.value = expense.description;
@@ -124,7 +136,7 @@ addBtn.addEventListener("click", function () {
     actionCell.appendChild(editBtn);
   }
 
-  updateTotal();
+  updateTotals();
   clearForm();
 });
 

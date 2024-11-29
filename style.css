@@ -36,6 +36,7 @@ body {
 
 .expense-table {
     padding: 5px 40px;
+    margin-bottom: 50px;
 
 }
 
@@ -88,6 +89,10 @@ th {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    background-color: #38618C;
+    margin: 20PX;
+    padding: 20PX;
+
     /* align-items: center; */
 }
 
@@ -100,13 +105,47 @@ th {
 
 .income-dispaly {
     border: 1px solid black;
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #8FD694;
+    font-size: larger;
+    font-weight: bold;
+    color: #0A1128;
 
 }
 
 .expense-display {
     border: 1px solid black;
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #EB4511;
+    font-size: larger;
+    font-weight: bold;
+    color: #fff;
 }
 
 .balance {
     border: 1px solid black;
+    width: 25%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    background-color: #DDD8B8;
+    font-size: larger;
+    font-weight: bold;
+    /* color: #fff; */
+    /* color: #fff; */
+
+}
+
+.your-Balance-container {
+    /* width: 25%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }

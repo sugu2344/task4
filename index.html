@@ -28,8 +28,25 @@
         <button class="btn" id="reset-btn">Reset</button>
 
     </div>
-    <div class="expense-table">
+    <div>
         <h2 class="table-text">Expense Table</h2>
+    </div>
+    <div class="filter-btns-content">
+
+        <div>Filter :</div>
+        <div class="filter-btns">
+            <input type="radio" id="all-filter" name="filter" value="all" checked>
+            <label for="all-filter">All</label><br>
+            <input type="radio" id="income-filter" name="filter" value="income">
+            <label for="income-filter">Income</label><br>
+            <input type="radio" id="expense-filter" name="filter" value="expense">
+            <label for="expense-filter">Expense</label>
+            <button class="apply-filter-btn" id="apply-filter-btn">Apply Filter</button>
+        </div>
+    </div>
+
+    <div class="expense-table">
+
         <table>
             <thead>
                 <tr>

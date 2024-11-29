@@ -8,14 +8,29 @@ const descriptionInput = document.getElementById("description");
 const dateInput = document.getElementById("date");
 const addBtn = document.getElementById("add-btn");
 const resetBtn = document.getElementById("reset-btn");
-
 const expenseData = document.getElementById("expense-data");
 const totalIncomeCell = document.getElementById("Total-income-amount");
 const totalExpenseCell = document.getElementById("Total-expense-amount");
 const netValueCell = document.getElementById("net-value");
+const applyFilterBtn = document.getElementById("apply-filter-btn");
 
 let isEditing = false;
 let editIndex = -1;
+function saveToLocalStorage() {
+  localStorage.setItem("expenses", JSON.stringify(expenses));
+}
+function loadFromLocalStorage() {
+  const storedExpenses = localStorage.getItem("expenses");
+  if (storedExpenses) {
+    expenses = JSON.parse(storedExpenses);
+    renderTable(expenses);
+  }
+}
+
+function updateTotalsAndSave() {
+  updateTotals();
+  saveToLocalStorage();
+}
 
 function updateTotals() {
   totalIncome = expenses
@@ -27,142 +42,17 @@ function updateTotals() {
 
   totalIncomeCell.textContent = totalIncome.toFixed(2);
   totalExpenseCell.textContent = totalExpense.toFixed(2);
-
-  const netValue = totalIncome - totalExpense;
-  netValueCell.textContent = netValue.toFixed(2);
+  netValueCell.textContent = (totalIncome - totalExpense).toFixed(2);
 }
 
 function clearForm() {
+  categorySelect.value = "income";
   amountInput.value = "";
   descriptionInput.value = "";
   dateInput.value = "";
-  categorySelect.value = "income";
 }
-
-addBtn.addEventListener("click", function () {
-  const category = categorySelect.value;
-  const amount = Number(amountInput.value);
-  const description = descriptionInput.value;
-  const date = dateInput.value;
-
-  if (category === "") {
-    alert("Please select a category.");
-    return;
-  }
-  if (isNaN(amount) || amount <= 0) {
-    alert("Please enter a valid amount.");
-    return;
-  }
-  if (description === "") {
-    alert("Please enter a description.");
-    return;
-  }
-  if (date === "") {
-    alert("Please select a date.");
-    return;
-  }
-  if (isEditing) {
-    const expense = expenses[editIndex];
-    if (expense.category === "income") totalIncome -= expense.amount;
-    else totalExpense -= expense.amount;
-
-    expense.category = category;
-    expense.amount = amount;
-    expense.description = description;
-    expense.date = date;
-    if (category === "income") totalIncome += amount;
-    else totalExpense += amount;
-    const row = expenseData.rows[editIndex];
-    row.cells[1].textContent =
-      category === "income" ? amount.toFixed(2) : "- -";
-    row.cells[2].textContent =
-      category === "expense" ? amount.toFixed(2) : "- -";
-    row.cells[3].textContent = description;
-    row.cells[4].textContent = date;
-
-    isEditing = false;
-    editIndex = -1;
-    addBtn.textContent = "Add";
-  } else {
-    const newExpense = { category, amount, description, date };
-    expenses.push(newExpense);
-
-    if (category === "income") totalIncome += amount;
-    else
-        totalExpense += amount;
-
-    const newRow = expenseData.insertRow();
-    newRow.insertCell().textContent = expenseData.rows.length;
-    newRow.insertCell().textContent =
-      category === "income" ? amount.toFixed(2) : "- -";
-    newRow.insertCell().textContent =
-      category === "expense" ? amount.toFixed(2) : "- -";
-    newRow.insertCell().textContent = description;
-    newRow.insertCell().textContent = date;
-
-    const actionCell = newRow.insertCell();
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.classList.add("delete-btn");
-    deleteBtn.addEventListener("click", function () {
-      const index = Array.from(expenseData.rows).indexOf(newRow);
-      const expense = expenses[index];
-
-      if (expense.category === "income") totalIncome -= expense.amount;
-      else totalExpense -= expense.amount;
-
-      expenses.splice(index, 1);
-      expenseData.deleteRow(index);
-
-      updateTotals();
-    });
-    actionCell.appendChild(deleteBtn);
-
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "Edit";
-    editBtn.classList.add("edit-btn");
-    editBtn.addEventListener("click", function () {
-      const index = Array.from(expenseData.rows).indexOf(newRow);
-      const expense = expenses[index];
-
-      categorySelect.value = expense.category;
-      amountInput.value = expense.amount;
-      descriptionInput.value = expense.description;
-      dateInput.value = expense.date;
-
-      isEditing = true;
-      editIndex = index;
-      addBtn.textContent = "Update";
-    });
-    actionCell.appendChild(editBtn);
-  }
-
-  clearForm();
-  updateTotals();
-});
-
-resetBtn.addEventListener("click", function () {
-  clearForm();
-});
-
-const applyFilterBtn = document.getElementById("apply-filter-btn");
-
-applyFilterBtn.addEventListener("click", function () {
-  const selectedFilter = document.querySelector(
-    'input[name="filter"]:checked'
-  ).value;
-
-  const filteredExpenses = expenses.filter((expense) => {
-    if (selectedFilter === "all") return true;
-    return expense.category === selectedFilter;
-  });
-
-  renderTable(filteredExpenses);
-});
-
 function renderTable(filteredExpenses) {
   expenseData.innerHTML = "";
-
   filteredExpenses.forEach((expense, index) => {
     const newRow = expenseData.insertRow();
     newRow.insertCell().textContent = index + 1;
@@ -177,27 +67,17 @@ function renderTable(filteredExpenses) {
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.classList.add("delete-btn");
-    deleteBtn.addEventListener("click", function () {
-      const index = Array.from(expenseData.rows).indexOf(newRow);
-      const expense = expenses[index];
-
-      if (expense.category === "income") totalIncome -= expense.amount;
-      else totalExpense -= expense.amount;
-
+    deleteBtn.addEventListener("click", () => {
       expenses.splice(index, 1);
-      expenseData.deleteRow(index);
-
-      updateTotals();
+      renderTable(expenses);
+      updateTotalsAndSave();
     });
     actionCell.appendChild(deleteBtn);
 
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
     editBtn.classList.add("edit-btn");
-    editBtn.addEventListener("click", function () {
-      const index = Array.from(expenseData.rows).indexOf(newRow);
-      const expense = expenses[index];
-
+    editBtn.addEventListener("click", () => {
       categorySelect.value = expense.category;
       amountInput.value = expense.amount;
       descriptionInput.value = expense.description;
@@ -212,3 +92,40 @@ function renderTable(filteredExpenses) {
 
   updateTotals();
 }
+
+addBtn.addEventListener("click", () => {
+  const category = categorySelect.value;
+  const amount = Number(amountInput.value);
+  const description = descriptionInput.value;
+  const date = dateInput.value;
+
+  if (!amount || amount <= 0 || !description || !date) {
+    alert("Please fill all fields with valid data.");
+    return;
+  }
+
+  if (isEditing) {
+    expenses[editIndex] = { category, amount, description, date };
+    isEditing = false;
+    editIndex = -1;
+    addBtn.textContent = "Add";
+  } else {
+    expenses.push({ category, amount, description, date });
+  }
+
+  clearForm();
+  renderTable(expenses);
+  updateTotalsAndSave();
+});
+resetBtn.addEventListener("click", clearForm);
+applyFilterBtn.addEventListener("click", () => {
+  const selectedFilter = document.querySelector(
+    'input[name="filter"]:checked'
+  ).value;
+  const filteredExpenses = expenses.filter(
+    (expense) => selectedFilter === "all" || expense.category === selectedFilter
+  );
+  renderTable(filteredExpenses);
+});
+
+document.addEventListener("DOMContentLoaded", loadFromLocalStorage);

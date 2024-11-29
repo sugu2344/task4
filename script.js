@@ -73,6 +73,7 @@ function Table(filteredExpenses) {
     deleteBtn.style.padding = "5px 10px";
     deleteBtn.style.borderRadius = "5px";
     deleteBtn.style.marginRight = "10px";
+    deleteBtn.style.cursor = "pointer";
 
     deleteBtn.addEventListener("click", () => {
       expenses.splice(index, 1);
@@ -90,6 +91,7 @@ function Table(filteredExpenses) {
     editBtn.style.border = "none";
     editBtn.style.padding = "5px 10px";
     editBtn.style.borderRadius = "5px";
+    editBtn.style.cursor = "pointer";
     editBtn.addEventListener("click", () => {
       categorySelect.value = expense.category;
       amountInput.value = expense.amount;

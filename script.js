@@ -140,7 +140,7 @@ applyFilterBtn.addEventListener("click", () => {
   const filteredExpenses = expenses.filter(
     (expense) => selectedFilter === "all" || expense.category === selectedFilter
   );
-  renderTable(filteredExpenses);
+  Table(filteredExpenses);
 });
 
 document.addEventListener("DOMContentLoaded", FromLocalStorage);

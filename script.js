@@ -16,17 +16,18 @@ const applyFilterBtn = document.getElementById("apply-filter-btn");
 
 let isEditing = false;
 let editIndex = -1;
+// localstorage
 function saveToLocalStorage() {
   localStorage.setItem("expenses", JSON.stringify(expenses));
 }
-function loadFromLocalStorage() {
+function FromLocalStorage() {
   const storedExpenses = localStorage.getItem("expenses");
   if (storedExpenses) {
     expenses = JSON.parse(storedExpenses);
-    renderTable(expenses);
+    Table(expenses);
   }
 }
-
+// display values of income & expense
 function updateTotal() {
   totalIncome = expenses
     .filter((expense) => expense.category === "income")
@@ -41,6 +42,7 @@ function updateTotal() {
     totalIncome - totalExpense
   ).toFixed(2)}`;
 }
+// reset form
 
 function clearForm() {
   categorySelect.value = "income";
@@ -48,7 +50,8 @@ function clearForm() {
   descriptionInput.value = "";
   dateInput.value = "";
 }
-function renderTable(filteredExpenses) {
+// table creation
+function Table(filteredExpenses) {
   expenseData.innerHTML = "";
   filteredExpenses.forEach((expense, index) => {
     const newRow = expenseData.insertRow();
@@ -61,18 +64,30 @@ function renderTable(filteredExpenses) {
     newRow.insertCell().textContent = expense.date;
 
     const actionCell = newRow.insertCell();
+    // delete button inside table
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
+    deleteBtn.style.backgroundColor = "red";
+    deleteBtn.style.color = "white";
+    deleteBtn.style.border = "none";
+    deleteBtn.style.padding = "5px 10px";
+    deleteBtn.style.borderRadius = "5px";
     deleteBtn.addEventListener("click", () => {
       expenses.splice(index, 1);
-      renderTable(expenses);
+      Table(expenses);
       updateTotal();
       saveToLocalStorage();
     });
     actionCell.appendChild(deleteBtn);
 
+    // edit button inside table
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
+    editBtn.style.backgroundColor = "blue";
+    editBtn.style.color = "white";
+    editBtn.style.border = "none";
+    editBtn.style.padding = "5px 10px";
+    editBtn.style.borderRadius = "5px";
     editBtn.addEventListener("click", () => {
       categorySelect.value = expense.category;
       amountInput.value = expense.amount;
@@ -110,7 +125,7 @@ addBtn.addEventListener("click", () => {
   }
 
   clearForm();
-  renderTable(expenses);
+  Table(expenses);
   saveToLocalStorage();
 });
 resetBtn.addEventListener("click", clearForm);
@@ -124,4 +139,4 @@ applyFilterBtn.addEventListener("click", () => {
   renderTable(filteredExpenses);
 });
 
-document.addEventListener("DOMContentLoaded", loadFromLocalStorage);
+document.addEventListener("DOMContentLoaded", FromLocalStorage);

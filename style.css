@@ -2,3 +2,62 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.form-input {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background-color: #ABD2FA;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.form-input label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.form-input input[type="text"],
+.form-input input[type="number"],
+.form-input input[type="date"] {
+    padding: "50px";
+    margin-right: 10px;
+}
+
+.btn {
+    background-color: orange;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.expense-table {
+    padding: 40px;
+}
+
+.table-text {
+    text-align: center;
+    color: rgb(100, 100, 100);
+}
+
+table {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: rgb(232, 84, 114);
+    color: #fff;
+    font-weight: bold;
+}

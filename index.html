@@ -11,27 +11,29 @@
 <body>
     <h1>Income Expense Calculator</h1>
     <div class="form-input">
-        <label for="category">Category</label>
+        <label for="category">Category :</label>
         <select id="category">
             <option value="income">Income</option>
             <option value="expense">Expense</option>
 
         </select>
-        <label for="amount">Amount</label>
+        <label for="amount">Amount :</label>
         <input type="number" id="amount">
+        <label for="description">Description :</label>
+        <input type="text" id="description" name="description">
 
         <label for="date">Date :</label>
         <input type="date" id="date">
-        <button id="add-btn">Add</button>
-        <button id="reset-btn">Reset</button>
+        <button class="btn" id="add-btn">Add</button>
+        <button class="btn" id="reset-btn">Reset</button>
 
     </div>
     <div class="expense-table">
-        <h2>expense Table</h2>
+        <h2 class="table-text">Expense Table</h2>
         <table>
             <thead>
                 <tr>
-                    <th>s.no</th>
+                    <th>S.No</th>
                     <th>Income</th>
                     <th>expense</th>
                     <th>Description</th>
@@ -41,8 +43,9 @@
             </thead>
             <tbody id="expense-data"></tbody>
             <tfoot>
-                <td>Total</td>
+                <td>Total :</td>
                 <td id="expense-amount"></td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tfoot>

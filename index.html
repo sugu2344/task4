@@ -28,8 +28,22 @@
         <button class="btn" id="reset-btn">Reset</button>
 
     </div>
+    <div class="display-values">
+        <div class="your-Balance-container">
+            <p class="balance" id="net-value">Your Balance : ₹ ></p>
+        </div>
+        <div class="income-expense-display-container">
+            <div class="income-dispaly" id="Total-income-amount">
+                Income:₹
+            </div>
+            <div class="expense-display" id="Total-expense-amount">
+                Expense :₹
+            </div>
+        </div>
+
+    </div>
     <div>
-        <h2 class="table-text">Expense Table</h2>
+        <h2 class=" table-text">Expense Table</h2>
     </div>
     <div class="filter-btns-content">
 
@@ -59,14 +73,14 @@
                 </tr>
             </thead>
             <tbody id="expense-data"></tbody>
-            <tfoot>
+            <!-- <tfoot>
                 <tr>
                     <td colspan="1">Totals:</td>
                     <td id="Total-income-amount">0.00</td>
                     <td id="Total-expense-amount">0.00</td>
                     <td colspan="2">Net-value: <span id="net-value">0.00</span></td>
                 </tr>
-            </tfoot>
+            </tfoot> -->
         </table>
 
     </div>

@@ -35,9 +35,11 @@ function updateTotal() {
     .filter((expense) => expense.category === "expense")
     .reduce((sum, expense) => sum + expense.amount, 0);
 
-  totalIncomeCell.textContent = totalIncome.toFixed(2);
-  totalExpenseCell.textContent = totalExpense.toFixed(2);
-  netValueCell.textContent = (totalIncome - totalExpense).toFixed(2);
+  totalIncomeCell.textContent = `Total Income: ₹${totalIncome.toFixed(2)}`;
+  totalExpenseCell.textContent = `Total Expense: ₹${totalExpense.toFixed(2)}`;
+  netValueCell.textContent = `Net Balance: ₹${(
+    totalIncome - totalExpense
+  ).toFixed(2)}`;
 }
 
 function clearForm() {

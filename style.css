@@ -3,6 +3,12 @@ body {
     padding: 0;
 }
 
+.header-text {
+    display: flex;
+    justify-content: center;
+
+}
+
 .form-input {
     display: flex;
     flex-wrap: wrap;
@@ -93,7 +99,6 @@ th {
     margin: 20PX;
     padding: 20PX;
 
-    /* align-items: center; */
 }
 
 .income-expense-display-container {

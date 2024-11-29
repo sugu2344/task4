@@ -11,8 +11,18 @@ const resetBtn = document.getElementById("reset-btn");
 const expenseData = document.getElementById("expense-data");
 const TotalExpenseAmount = document.getElementById("Total-expense-amount");
 
+let isEditing = false;
+let editIndex = -1;
+
 function updateTotal() {
   TotalExpenseAmount.textContent = totalAmount.toFixed(2);
+}
+
+function clearForm() {
+  amountInput.value = "";
+  descriptionInput.value = "";
+  dateInput.value = "";
+  categorySelect.value = "income";
 }
 
 addBtn.addEventListener("click", function () {
@@ -38,43 +48,89 @@ addBtn.addEventListener("click", function () {
     return;
   }
 
-  const newExpense = { category, amount, description, date };
-  expenses.push(newExpense);
-  totalAmount += amount;
+  if (isEditing) {
+   
+    const expense = expenses[editIndex];
+    totalAmount -= expense.amount;
 
-  const newRow = expenseData.insertRow();
-  newRow.insertCell().textContent = expenseData.rows.length;
-  newRow.insertCell().textContent =
-    category === "income" ? amount.toFixed(2) : "- -";
-  newRow.insertCell().textContent =
-    category === "expense" ? amount.toFixed(2) : "- -";
-  newRow.insertCell().textContent = description;
-  newRow.insertCell().textContent = date;
+    expense.category = category;
+    expense.amount = amount;
+    expense.description = description;
+    expense.date = date;
 
-  const actionCell = newRow.insertCell();
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "Delete";
-  deleteBtn.classList.add("delete-btn");
-  deleteBtn.addEventListener("click", function () {
-    const index = Array.from(expenseData.rows).indexOf(newRow);
-    totalAmount -= expenses[index].amount;
-    expenses.splice(index, 1);
-    expenseData.deleteRow(index);
-    updateTotal();
-  });
-  actionCell.appendChild(deleteBtn);
+    totalAmount += amount;
+
+
+    const row = expenseData.rows[editIndex];
+    row.cells[1].textContent =
+      category === "income" ? amount.toFixed(2) : "- -";
+    row.cells[2].textContent =
+      category === "expense" ? amount.toFixed(2) : "- -";
+    row.cells[3].textContent = description;
+    row.cells[4].textContent = date;
+
+    isEditing = false;
+    editIndex = -1;
+    addBtn.textContent = "Add";
+  } else {
+    
+    const newExpense = { category, amount, description, date };
+    expenses.push(newExpense);
+    totalAmount += amount;
+
+    const newRow = expenseData.insertRow();
+    newRow.insertCell().textContent = expenseData.rows.length; // S.No
+    newRow.insertCell().textContent =
+      category === "income" ? amount.toFixed(2) : "- -";
+    newRow.insertCell().textContent =
+      category === "expense" ? amount.toFixed(2) : "- -";
+    newRow.insertCell().textContent = description;
+    newRow.insertCell().textContent = date;
+
+   
+    const actionCell = newRow.insertCell();
+
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.addEventListener("click", function () {
+      const index = Array.from(expenseData.rows).indexOf(newRow);
+      totalAmount -= expenses[index].amount;
+      expenses.splice(index, 1);
+      expenseData.deleteRow(index);
+      updateTotal();
+    });
+    actionCell.appendChild(deleteBtn);
+
+   
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.classList.add("edit-btn");
+    editBtn.addEventListener("click", function () {
+      const index = Array.from(expenseData.rows).indexOf(newRow);
+      const expense = expenses[index];
+
+ 
+      categorySelect.value = expense.category;
+      amountInput.value = expense.amount;
+      descriptionInput.value = expense.description;
+      dateInput.value = expense.date;
+
+      isEditing = true;
+      editIndex = index;
+      addBtn.textContent = "Update";
+    });
+    actionCell.appendChild(editBtn);
+  }
 
   updateTotal();
-
-  amountInput.value = "";
-  descriptionInput.value = "";
-  dateInput.value = "";
-  categorySelect.value = "income";
+  clearForm();
 });
 
 resetBtn.addEventListener("click", function () {
-  amountInput.value = "";
-  descriptionInput.value = "";
-  dateInput.value = "";
-  categorySelect.value = "income";
+  clearForm();
+  isEditing = false;
+  editIndex = -1;
+  addBtn.textContent = "Add";
 });

@@ -27,12 +27,7 @@ function loadFromLocalStorage() {
   }
 }
 
-function updateTotalsAndSave() {
-  updateTotals();
-  saveToLocalStorage();
-}
-
-function updateTotals() {
+function updateTotal() {
   totalIncome = expenses
     .filter((expense) => expense.category === "income")
     .reduce((sum, expense) => sum + expense.amount, 0);
@@ -66,17 +61,16 @@ function renderTable(filteredExpenses) {
     const actionCell = newRow.insertCell();
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
-    deleteBtn.classList.add("delete-btn");
     deleteBtn.addEventListener("click", () => {
       expenses.splice(index, 1);
       renderTable(expenses);
-      updateTotalsAndSave();
+      updateTotal();
+      saveToLocalStorage();
     });
     actionCell.appendChild(deleteBtn);
 
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
-    editBtn.classList.add("edit-btn");
     editBtn.addEventListener("click", () => {
       categorySelect.value = expense.category;
       amountInput.value = expense.amount;
@@ -90,7 +84,7 @@ function renderTable(filteredExpenses) {
     actionCell.appendChild(editBtn);
   });
 
-  updateTotals();
+  updateTotal();
 }
 
 addBtn.addEventListener("click", () => {
@@ -115,7 +109,7 @@ addBtn.addEventListener("click", () => {
 
   clearForm();
   renderTable(expenses);
-  updateTotalsAndSave();
+  saveToLocalStorage();
 });
 resetBtn.addEventListener("click", clearForm);
 applyFilterBtn.addEventListener("click", () => {

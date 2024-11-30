@@ -34,9 +34,9 @@ https://expense-calculator-dom.netlify.app
 ![income1](https://github.com/user-attachments/assets/d6f860cd-5c6d-4fdc-8ad2-84be8a7d53e5)
 #### Table Data
 ![income2](https://github.com/user-attachments/assets/040d26c4-a1b6-477e-bd69-bcc0c3d0ec4f)
-#### Table Data with displaye Net values
+#### Table Data with displayed Net values
 ![income3](https://github.com/user-attachments/assets/1ea5c687-fa06-46e8-b577-b209a9d618b5)
-#### Table Data with displaye Net values
+#### Table Data with displayed Net values
 ![incomeedit4](https://github.com/user-attachments/assets/07c2c6d1-54ac-4662-b45d-540a664e9907)
 #### Datas in local storage
 ![incomelocalstorage5](https://github.com/user-attachments/assets/f2c76027-0051-4758-bce1-82c56e4db5a2)
